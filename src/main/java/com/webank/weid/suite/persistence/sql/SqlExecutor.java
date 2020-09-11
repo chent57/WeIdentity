@@ -297,10 +297,13 @@ public class SqlExecutor {
             String tableName = TABLE_CACHE.get(sqlDomain.getKey());
             //说明本地没有此tableDomain
             if (StringUtils.isBlank(tableName)) {
+                // 查询表是否存在，不存在存在的话
                 if (this.initLocalTable(checkTableSql)) {
                     return;
                 }
+                // 执行Sql创建一个新表
                 this.createTable(createTableSql);
+                // 再次check创建新表是否成功
                 if (!this.initLocalTable(checkTableSql)) {
                     logger.error(
                         "[resolveTableDomain] the domain {{}:{}} is invalid.",
@@ -333,14 +336,17 @@ public class SqlExecutor {
         }
         return null;
     }
-    
+
+    // 通过Sql查询表名是否存在，不存在返回false；存在的话把domainName和tableName记录到本地缓存中；
     private boolean initLocalTable(String checkTableSql) {
+        // data<-->表名
         Map<String, String> result = checkTable(checkTableSql);
         String tableName = sqlDomain.getTableName();
         //如果数据库中存在此表
         if (result != null
             && tableName.equalsIgnoreCase(result.get(DataDriverConstant.SQL_COLUMN_DATA))) {
             //本地缓存记录此表
+            // domainName<-->tableName
             TABLE_CACHE.put(sqlDomain.getKey(), tableName);
             logger.info(
                 "[initLocalTable] the domain {{}:{}} is init success.",

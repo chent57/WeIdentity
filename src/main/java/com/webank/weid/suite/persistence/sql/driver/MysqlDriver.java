@@ -242,9 +242,12 @@ public class MysqlDriver implements Persistence {
      * 初始化domain.
      */
     private void initDomain() {
+        // 获取所有的domain key
         Set<String> domainKeySet = analyzeDomainValue();
+        // 为每个domain key创建一个Sql执行器
         for (String domainKey : domainKeySet) {
             SqlExecutor sqlExecutor = new SqlExecutor(new SqlDomain(domainKey));
+            // 检查表是否存在，不存在就创建该表
             sqlExecutor.resolveTableDomain(CHECK_TABLE_SQL, CREATE_TABLE_SQL);
         }
     }

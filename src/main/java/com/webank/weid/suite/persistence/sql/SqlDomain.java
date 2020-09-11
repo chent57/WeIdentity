@@ -31,6 +31,9 @@ import com.webank.weid.constant.ErrorCode;
 import com.webank.weid.exception.WeIdBaseException;
 import com.webank.weid.util.PropertyUtils;
 
+/**
+ *
+ */
 @Getter
 public class SqlDomain {
     
@@ -99,12 +102,14 @@ public class SqlDomain {
     public SqlDomain() {
         resolveDomain();
     }
-    
+
+    // 设置domain的key, 然后解析domain的value值
     public SqlDomain(String domainKey) {
         this.key = domainKey;
         resolveDomain();
     }
 
+    // 根据domain key从weidentity.properties配置文件中读取value值并设置baseDomain, tableDomain等;
     private void resolveDomain() {
         if (StringUtils.isBlank(this.key)) {
             this.key = DataDriverConstant.DOMAIN_DEFAULT_INFO;
