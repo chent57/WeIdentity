@@ -108,6 +108,7 @@ public class MysqlDriver implements Persistence {
             ResponseData<String> result = new ResponseData<String>();
             result.setResult(StringUtils.EMPTY);
             SqlDomain sqlDomain = new SqlDomain(domain);
+            // 每次执行Sql都会新建一个SqlExecutor
             ResponseData<Map<String, String>> response = new SqlExecutor(sqlDomain)
                 .executeQuery(SqlExecutor.SQL_QUERY, dataKey);
             if (response.getErrorCode().intValue() == ErrorCode.SUCCESS.getCode()
